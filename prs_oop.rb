@@ -3,19 +3,24 @@
 # Paper-Rock-Scissors OOP
 
 class Player
+
   attr_accessor :choice
 
   CHOICES = {'p' => 'paper', 'r' => 'rock', 's' => 'scissors'}
 
   def initialize; end
 
+  def to_s
+    "You chose #{CHOICES[choice]}."
+  end
+
   def move
     loop do
-      c = gets.chomp.downcase
+      self.choice = gets.chomp.downcase
   
-      if valid_choice?(c)
-        puts "You chose #{CHOICES[c]}."
-        return self.choice = c
+      if valid_choice?(self.choice)
+        puts self 
+        return self.choice
       end
     end
   end
@@ -30,16 +35,22 @@ class Player
       false
     end
   end
+
+
 end
 
 class Computer < Player
 
   def initialize; end
 
+  def to_s
+    "Computer chose #{CHOICES[choice]}."
+  end
+
   def move
-    c = CHOICES.keys.sample
-    puts "Computer chose #{CHOICES[c]}."
-    self.choice = c
+    self.choice = CHOICES.keys.sample
+    puts self 
+    self.choice 
   end
 end
 
@@ -55,7 +66,7 @@ class GamePlay
   def run
     loop do
       puts "Choose one: (P/R/S)"
-      winner(self.player.move, self.computer.move)
+      compare
       break if play_again? == 'n'
       system 'clear'
     end
@@ -68,21 +79,23 @@ class GamePlay
     ['y', 'n'].include?(a)
   end
 
-  def winner(p, o)
+  def compare
+    p = player.move
+    c = computer.move
     case  
-    when p == 'p' && o == 'r'
+    when p == 'p' && c == 'r'
       puts "You won! Paper beats rock!"
-    when p == 'p' && o == 's'
+    when p == 'p' && c  == 's'
       puts "You lost! Scissors cuts paper!"
-    when p == 'r' && o == 's'
+    when p == 'r' && c == 's'
       puts "You won! Rock crushes scissors!"
-    when p == 'r' && o == 'p'
+    when p == 'r' && c == 'p'
       puts "You lost! Paper covers rock!"
-    when p == 's' && o == 'p'
+    when p == 's' && c  == 'p'
       puts "You won! Scissors cuts paper!"
-    when p == 's' && o == 'r'
+    when p == 's' && c  == 'r'
       puts "You lost! Rock crushes scissors!"
-    when p == o
+    else
       puts "There's a tie!"
     end
   end
