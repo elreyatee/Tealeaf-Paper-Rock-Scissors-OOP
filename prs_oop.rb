@@ -15,8 +15,7 @@ class Player
   
       if valid_choice?(c)
         puts "You chose #{CHOICES[c]}."
-        choice = c
-        return choice
+        return self.choice = c
       end
     end
   end
@@ -38,9 +37,9 @@ class Computer < Player
   def initialize; end
 
   def move
-    choice = CHOICES.keys.sample
-    puts "Computer chose #{CHOICES[choice]}."
-    choice
+    c = CHOICES.keys.sample
+    puts "Computer chose #{CHOICES[c]}."
+    self.choice = c
   end
 end
 
