@@ -9,6 +9,20 @@ class Player
 
   def initialize; end
 
+  def move
+    loop do
+      choice = gets.chomp.downcase
+  
+      if valid_choice?(choice)
+        puts "You chose #{CHOICES[choice]}."
+        break
+      end
+    end
+    choice
+  end
+
+  private
+
   def valid_choice?(move)
     if CHOICES.keys.include?(move)
       true 
@@ -17,21 +31,9 @@ class Player
       false
     end
   end
-
-  def move
-    loop do
-      choice = gets.chomp.downcase
-  
-      if valid_choice?(choice) == true
-        puts "You chose #{CHOICES[choice]}."
-        return choice
-      end
-     end
-  end
 end
 
 class Computer < Player
-  attr_accessor :choice
 
   def initialize; end
 
@@ -51,13 +53,19 @@ class GamePlay
     self.computer = Computer.new
   end
 
-  def valid?(a)
-    if ['y', 'n'].include?(a) 
-      true 
-    else
-      puts "Invalid selection."
-      false
+  def run
+    loop do
+      puts "Choose one: (P/R/S)"
+      winner(self.player.move, self.computer.move)
+      break if play_again? == 'n'
     end
+    puts "Thanks for playing!"
+  end
+
+  private
+
+  def valid?(a)
+    ['y', 'n'].include?(a)
   end
 
   def winner(p, o)
@@ -80,26 +88,16 @@ class GamePlay
   end
 
   def play_again?
-    answer = ""
+    puts "Would you like to play again?(Y/N)"
+
     loop do
-      puts "Would you like to play again?(Y/N)"
       answer = gets.chomp.downcase
       if valid?(answer) 
-        break 
+        return answer
       else
-        puts "Invalid selection."
+        puts "Invalid selection. Try again."
       end
     end
-    answer
-  end
-
-  def run
-    loop do
-      puts "Choose one: (P/R/S)"
-      winner(self.player.move, self.computer.move)
-      break if play_again? == 'n'
-    end
-    puts "Thanks for playing!"
   end
 end
 
