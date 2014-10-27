@@ -11,14 +11,14 @@ class Player
 
   def move
     loop do
-      choice = gets.chomp.downcase
+      c = gets.chomp.downcase
   
-      if valid_choice?(choice)
-        puts "You chose #{CHOICES[choice]}."
-        break
+      if valid_choice?(c)
+        puts "You chose #{CHOICES[c]}."
+        choice = c
+        return choice
       end
     end
-    choice
   end
 
   private
@@ -39,7 +39,7 @@ class Computer < Player
 
   def move
     choice = CHOICES.keys.sample
-    puts "Computer chose #{CHOICES[choice]}"
+    puts "Computer chose #{CHOICES[choice]}."
     choice
   end
 end
@@ -83,7 +83,7 @@ class GamePlay
       puts "You won! Scissors cuts paper!"
     when p == 's' && o == 'r'
       puts "You lost! Rock crushes scissors!"
-    else
+    when p == o
       puts "There's a tie!"
     end
   end
