@@ -58,6 +58,7 @@ class GamePlay
       puts "Choose one: (P/R/S)"
       winner(self.player.move, self.computer.move)
       break if play_again? == 'n'
+      system 'clear'
     end
     puts "Thanks for playing!"
   end
