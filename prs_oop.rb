@@ -5,47 +5,36 @@
 class Player
 
   attr_accessor :choice
+  attr_reader :name
 
   CHOICES = {'p' => 'paper', 'r' => 'rock', 's' => 'scissors'}
 
-  def initialize; end
-
-  def to_s
-    "You chose #{CHOICES[choice]}."
+  def initialize(n)
+    @name = n
   end
 
   def move
-    loop do
+    begin
       self.choice = gets.chomp.downcase
-  
-      if valid_choice?(self.choice)
-        puts self 
-        return self.choice
-      end
-    end
+
+      puts "Invalid choice, please try again." if !valid_choice?
+    end until valid_choice?
+    puts self
+    self.choice
   end
 
   private
 
-  def valid_choice?(move)
-    if CHOICES.keys.include?(move)
-      true 
-    else
-      puts "Invalid choice, please try again."
-      false
-    end
+  def valid_choice?
+    CHOICES.keys.include?(choice) ? true : false
   end
 
-
+  def to_s
+    "#{name} chose #{CHOICES[choice]}."
+  end
 end
 
 class Computer < Player
-
-  def initialize; end
-
-  def to_s
-    "Computer chose #{CHOICES[choice]}."
-  end
 
   def move
     self.choice = CHOICES.keys.sample
@@ -55,19 +44,20 @@ class Computer < Player
 end
 
 class GamePlay
+
   attr_accessor :player, :computer
 
   def initialize
     puts "Play Paper, Rock, Scissors!"
-    self.player = Player.new
-    self.computer = Computer.new
+    @player = Player.new('Player')
+    @computer = Computer.new('Computer')
   end
 
   def run
     loop do
       puts "Choose one: (P/R/S)"
-      compare
-      break if play_again? == 'n'
+      compare_moves
+      break if replay == 'n'
       system 'clear'
     end
     puts "Thanks for playing!"
@@ -79,9 +69,11 @@ class GamePlay
     ['y', 'n'].include?(a)
   end
 
-  def compare
+  def compare_moves
+
     p = player.move
     c = computer.move
+
     case  
     when p == 'p' && c == 'r'
       puts "You won! Paper beats rock!"
@@ -100,17 +92,16 @@ class GamePlay
     end
   end
 
-  def play_again?
+  def replay
     puts "Would you like to play again?(Y/N)"
 
-    loop do
+    begin
       answer = gets.chomp.downcase
-      if valid?(answer) 
-        return answer
-      else
-        puts "Invalid selection. Try again."
-      end
-    end
+
+      puts "Invalid selection. Try again." if !valid?(answer)
+    end until valid?(answer)
+
+    answer
   end
 end
 
